@@ -1,0 +1,38 @@
+# Docker Compose override for local development
+# This file is automatically loaded with docker-compose.yml
+
+services:
+  db:
+    restart: "no"
+    ports:
+      - "5433:5432"
+
+  adminer:
+    restart: "no"
+    ports:
+      - "8080:8080"
+
+  backend:
+    restart: "no"
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command:
+      - fastapi
+      - run
+      - --reload
+      - "app/main.py"
+    develop:
+      watch:
+        - path: ./backend
+          action: sync
+          target: /app/backend
+          ignore:
+            - ./backend/.venv
+            - .venv
+        - path: ./backend/pyproject.toml
+          action: rebuild
+    volumes:
+      - ./backend/htmlcov:/app/backend/htmlcov
