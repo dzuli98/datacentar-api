@@ -48,9 +48,6 @@ backend/
 │   ├── conftest.py            # Pytest fixtures and configuration
 │   └── test_distribution.py   # Distribution algorithm tests
 └── Dockerfile
-
-docker-compose.yml             # Multi-container orchestration
-docker-compose.override.yml    # Local development overrides
 ```
 
 ---
@@ -158,6 +155,7 @@ The application uses a layered architecture with service classes that contain bu
   - Ensures power limits are not exceeded
 
 **Example Usage:**
+
 ```bash
 curl -X POST http://localhost:8000/api/v1/distribution/calculate \
   -H "Content-Type: application/json" \
