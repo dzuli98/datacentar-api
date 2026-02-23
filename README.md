@@ -1,12 +1,12 @@
 # Data Center API
 
-## Overview
+## 🚀 Overview
 
 Data Center API is a RESTful application for managing devices and racks in a data center, tracking power consumption, and providing suggestions for optimal device placement. Built with FastAPI and SQLModel, PostgreSQL and Docker.
 
 ---
 
-## Available API Endpoints
+## 📡 Available API Endpoints
 
 All endpoints are versioned under `/api/v1`.
 
@@ -34,9 +34,9 @@ Interactive API docs:
 
 ---
 
-## Running with Docker Compose
+## 🤓 Running with Docker Compose
 
-1. Copy `.env.example` to `.env` and adjust variables as needed.
+1. Copy `.env.example` to `.env` and adjust variables as needed. (you may leave them as in example)
 2. Build and start services:
 
 ```bash
@@ -48,17 +48,11 @@ docker compose up --build --watch
 
 ---
 
-## Running Tests
+## 🧪 Running Tests
 
 Tests for the device distribution algorithm are provided as unit/integration tests.
 
 To run tests:
-
-```bash
-docker compose exec backend bash
-```
-
-To run tests in Docker:
 
 ```bash
 docker compose exec backend bash scripts/tests-start.sh
