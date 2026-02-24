@@ -75,7 +75,8 @@ backend/
 
 3. **Start the application:**
    ```bash
-   docker compose up --build --watch
+   docker compose build
+   docker compose up --watch
    ```
 
 4. **Access the API:**
@@ -154,16 +155,6 @@ The application uses a layered architecture with service classes that contain bu
   - Assigns each device to the rack with lowest current utilization
   - Ensures power limits are not exceeded
 
-**Example Usage:**
-
-```bash
-curl -X POST http://localhost:8000/api/v1/distribution/calculate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "device_ids": [1, 2, 3],
-    "rack_ids": [1, 2]
-  }'
-```
 
 ## 🧪 Testing
 
