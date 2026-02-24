@@ -30,9 +30,9 @@ def init(db_engine: Engine) -> None:
 
 
 def main() -> None:
-    logger.info("Initializing service")
+    logger.info("Initializing service...")
     init(engine)
-    logger.info("Service finished initializing")
+    logger.info("Service finished initializing...")
 
 
 if __name__ == "__main__":
