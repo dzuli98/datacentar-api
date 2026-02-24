@@ -2,21 +2,18 @@ from fastapi import HTTPException, status
 
 
 class NotFoundError(HTTPException):
-    """Resurs nije pronađen."""
 
     def __init__(self, detail: str = "Resource not found"):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class ConflictError(HTTPException):
-    """Konflikt - npr. duplikat."""
 
     def __init__(self, detail: str = "Resource already exists"):
         super().__init__(status_code=status.HTTP_409_CONFLICT, detail=detail)
 
 
 class BusinessRuleError(HTTPException):
-    """Povređeno poslovno pravilo."""
 
     def __init__(self, detail: str = "Business rule violation"):
         super().__init__(status_code=status.HTTP_409_CONFLICT, detail=detail)
