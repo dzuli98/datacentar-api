@@ -1,4 +1,5 @@
 import pytest
+from uuid import uuid4
 from app.models.device import Device
 from app.models.distribution import DistributionRequest
 from app.models.rack import Rack
@@ -21,12 +22,12 @@ class TestDistributionBasic:
 
     def test_single_device_single_rack(self, session: Session):
         device = Device(
-            name="Test Server", serial_number="TEST001", units_required=4, power_w=1000
+            name="Test Server", serial_number=f"TEST-{uuid4()}", units_required=4, power_w=1000
         )
         session.add(device)
 
         rack = Rack(
-            name="Test Rack", serial_number="RACK001", total_units=42, max_power_w=5000
+            name="Test Rack", serial_number=f"RACK-{uuid4()}", total_units=42, max_power_w=5000
         )
         session.add(rack)
         session.commit()
@@ -66,7 +67,7 @@ class TestDistributionBalancing:
         for i in range(4):
             d = Device(
                 name=f"Server {i}",
-                serial_number=f"SRV{i:03d}",
+                serial_number=f"SRV-{uuid4()}",
                 units_required=2,
                 power_w=1000,
             )
@@ -77,7 +78,7 @@ class TestDistributionBalancing:
         for i in range(2):
             r = Rack(
                 name=f"Rack {i}",
-                serial_number=f"RACK{i:03d}",
+                serial_number=f"RACK-{uuid4()}",
                 total_units=42,
                 max_power_w=5000,
             )
@@ -108,19 +109,19 @@ class TestDistributionBalancing:
         devices = [
             Device(
                 name="Big Server",
-                serial_number="BIG001",
+                serial_number=f"BIG-{uuid4()}",
                 units_required=4,
                 power_w=2000,
             ),
             Device(
                 name="Medium Server",
-                serial_number="MED001",
+                serial_number=f"MED-{uuid4()}",
                 units_required=2,
                 power_w=1000,
             ),
             Device(
                 name="Small Server",
-                serial_number="SML001",
+                serial_number=f"SML-{uuid4()}",
                 units_required=1,
                 power_w=500,
             ),
@@ -130,10 +131,10 @@ class TestDistributionBalancing:
 
         racks = [
             Rack(
-                name="Rack A", serial_number="RA001", total_units=42, max_power_w=5000
+                name="Rack A", serial_number=f"RA-{uuid4()}", total_units=42, max_power_w=5000
             ),
             Rack(
-                name="Rack B", serial_number="RB001", total_units=42, max_power_w=5000
+                name="Rack B", serial_number=f"RB-{uuid4()}", total_units=42, max_power_w=5000
             ),
         ]
         for r in racks:
@@ -160,13 +161,13 @@ class TestDistributionUnplacedDevices:
     def test_device_too_big_for_any_rack_units(self, session: Session):
 
         device = Device(
-            name="Huge Device", serial_number="HUGE001", units_required=50, power_w=500
+            name="Huge Device", serial_number=f"HUGE-{uuid4()}", units_required=50, power_w=500
         )
         session.add(device)
 
         rack = Rack(
             name="Standard Rack",
-            serial_number="STD001",
+            serial_number=f"STD-{uuid4()}",
             total_units=42,
             max_power_w=10000,
         )
@@ -187,13 +188,13 @@ class TestDistributionUnplacedDevices:
 
     def test_device_exceeds_power_capacity(self, session: Session):
         device = Device(
-            name="Power Hungry", serial_number="PWR001", units_required=4, power_w=6000
+            name="Power Hungry", serial_number=f"PWR-{uuid4()}", units_required=4, power_w=6000
         )
         session.add(device)
 
         rack = Rack(
             name="Standard Rack",
-            serial_number="STD001",
+            serial_number=f"STD-{uuid4()}",
             total_units=42,
             max_power_w=5000,
         )
@@ -217,7 +218,7 @@ class TestDistributionUnplacedDevices:
         for i in range(10):
             d = Device(
                 name=f"Server {i}",
-                serial_number=f"SRV{i:03d}",
+                serial_number=f"SRV-{uuid4()}",
                 units_required=5,
                 power_w=400,
             )
@@ -226,7 +227,7 @@ class TestDistributionUnplacedDevices:
 
         rack = Rack(
             name="Single Rack",
-            serial_number="SINGLE001",
+            serial_number=f"SINGLE-{uuid4()}",
             total_units=42,
             max_power_w=10000,
         )
@@ -253,7 +254,7 @@ class TestDistributionEdgeCases:
 
     def test_no_racks_available(self, session: Session):
         device = Device(
-            name="Orphan", serial_number="ORP001", units_required=2, power_w=500
+            name="Orphan", serial_number=f"ORP-{uuid4()}", units_required=2, power_w=500
         )
         session.add(device)
         session.commit()
@@ -272,7 +273,7 @@ class TestDistributionEdgeCases:
         from app.exceptions import NotFoundError
 
         request = DistributionRequest(
-            device_ids=[99999],  # Ne postoji
+            device_ids=[99999],
             rack_ids=[r.id for r in sample_racks],
         )
 
@@ -284,7 +285,7 @@ class TestDistributionEdgeCases:
 
         request = DistributionRequest(
             device_ids=[d.id for d in sample_devices],
-            rack_ids=[99999],  # Ne postoji
+            rack_ids=[99999],
         )
 
         with pytest.raises(NotFoundError):
